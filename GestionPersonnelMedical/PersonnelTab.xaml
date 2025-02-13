@@ -1,0 +1,120 @@
+﻿<UserControl x:Class="GestionPersonnelMedical.PersonnelTab"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:GestionPersonnelMedical"
+             xmlns:resx="clr-namespace:GestionPersonnelMedical.Properties"
+             mc:Ignorable="d" 
+             d:DesignHeight="700" d:DesignWidth="1400">
+    <!-- Layout principal utilisant un DockPanel -->
+    <DockPanel>
+        <!-- Section contenant le DataGrid et les contrôles associés -->
+        <Grid DockPanel.Dock="Bottom">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <!-- DataGrid pour afficher les informations sur le personnel -->
+            <DataGrid x:Name="dgPersonnel" Grid.Column="1" ItemsSource="{Binding}" 
+                      AutoGenerateColumns="False" CanUserAddRows="False" 
+                      IsReadOnly="True" Grid.ColumnSpan="3" SelectionChanged="dgPersonnel_SelectionChanged">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="{x:Static resx:Resources.LabelNom}" Binding="{Binding Nom}" Width="*"/>
+                    <DataGridTextColumn Header="{x:Static resx:Resources.LabelPrenom}" Binding="{Binding Prenom}" Width="*"/>
+                    <DataGridTextColumn Header="{x:Static resx:Resources.LabelDepartement}" Binding="{Binding Departement}" Width="*"/>
+                    <DataGridTextColumn Header="{x:Static resx:Resources.LabelDisponibilite}" Binding="{Binding Disponibilite}" Width="*"/>
+                    <DataGridTextColumn x:Name="SpecialiteColumn" Header="{x:Static resx:Resources.LabelSpecialite}" Binding="{Binding Specialite}" Width="*"/>
+                </DataGrid.Columns>
+            </DataGrid>
+
+            <!-- Section de gestion et de filtrage -->
+            <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <!-- Boutons pour changer d'onglet et de langue -->
+                <Grid Grid.Row="0" Background="#FF171717" Height="35">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <Button Content="{x:Static resx:Resources.GestionHeader}"
+                            Click="btn_TabGestion"
+                            Grid.Column="0"/>
+                    <Button Content="{x:Static resx:Resources.FiltrageHeader}"
+                            Click="btn_TabFiltrer" 
+                            Grid.Column="1"/>
+                    <Button Content="Français"
+                            Click="btn_Francais" 
+                            Grid.Column="2"/>
+                    <Button Content="English"
+                            Click="btn_Anglais" 
+                            Grid.Column="3"/>
+                </Grid>
+
+                <!-- Section de gestion visible par défaut -->
+                <StackPanel x:Name="spGestion" Background="#FF171717"
+                             Grid.Row="1" Visibility="Visible">
+                    <Label FontSize="30" Content="{x:Static resx:Resources.GestionHeader}" HorizontalAlignment="Center"/>
+
+                    <Label Content="{x:Static resx:Resources.LabelNom}"/>
+                    <TextBox x:Name="tbNom"/>
+
+                    <Label Content="{x:Static resx:Resources.LabelPrenom}"/>
+                    <TextBox x:Name="tbPrenom"/>
+
+                    <Label Content="{x:Static resx:Resources.LabelDepartement}"/>
+                    <ComboBox x:Name="cbDepartement" Width="90" Height="25"/>
+
+                    <Label Content="{x:Static resx:Resources.LabelDisponibilite}"/>
+                    <ComboBox x:Name="cbDisponibilite" Width="90" Height="25">
+                        <ComboBoxItem Content="{x:Static resx:Resources.Disponible}" />
+                        <ComboBoxItem Content="{x:Static resx:Resources.Indisponible}" />
+                    </ComboBox>
+
+                    <Label x:Name="lbSpecialite" Content="{x:Static resx:Resources.LabelSpecialite}"/>
+                    <TextBox x:Name="tbSpecialite"/>
+
+                    <!-- Boutons pour gérer les actions sur le personnel -->
+                    <StackPanel Style="{StaticResource StackBas}">
+                        <Button x:Name="btn_Ajout" Content="{x:Static resx:Resources.ButtonAjouter}" Click="btn_Ajouter"/>
+                        <Button x:Name="btn_Modif" Content="{x:Static resx:Resources.ButtonModifier}" Click="btn_Modifier"/>
+                        <Button x:Name="btn_Suppr" Content="{x:Static resx:Resources.ButtonSupprimer}" Click="btn_Supprimer"/>
+                    </StackPanel>
+                </StackPanel>
+
+                <!-- Section de filtrage cachée par défaut -->
+                <StackPanel x:Name="spFiltre" Grid.Row="1" Visibility="Hidden" Background="#FF171717">
+                    <Label FontSize="30" Content="{x:Static resx:Resources.FiltrageHeader}" HorizontalAlignment="Center"/>
+
+                    <Label Name="lbFiltreSpecialite" Content="{x:Static resx:Resources.LabelSpecialite}"/>
+                    <TextBox x:Name="tbFiltreSpecialite"/>
+
+                    <Label Content="{x:Static resx:Resources.LabelDepartement}"/>
+                    <ComboBox x:Name="cbFiltreDep" Width="90" Height="25"/>
+
+                    <Label Content="{x:Static resx:Resources.LabelDisponibilite}"/>
+                    <ComboBox x:Name="cbFiltreDisponibilite" Width="90" Height="25">
+                        <ComboBoxItem Content="{x:Static resx:Resources.Disponible}" />
+                        <ComboBoxItem Content="{x:Static resx:Resources.Indisponible}" />
+                    </ComboBox>
+
+                    <!-- Boutons pour appliquer ou réinitialiser le filtre -->
+                    <StackPanel Style="{StaticResource StackBas}">
+                        <Button x:Name="btn_Recher" Content="{x:Static resx:Resources.ButtonRechercher}" Click="btn_Rechercher"/>
+                        <Button x:Name="btn_Reinit" Content="{x:Static resx:Resources.ButtonReinitialiser}" Click="btn_Reinitialiser"/>
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
+        </Grid>
+    </DockPanel>
+</UserControl>
