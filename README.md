@@ -1,5 +1,5 @@
 # Medical Personnel Management System (originally Gestion Personnel Medical)
-*This project was developed in French as part of a school assignment.*
+*This project was developed in French by a team of 3 as part of a school assignment.*
 
 ## Overview
 The Medical Personnel Management System (MPMS) is a desktop application built using C# and .NET (WPF) to help healthcare institutions manage their personnel efficiently. The application allows administrators to:
